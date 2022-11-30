@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dependency_groups"
+description = "A package for managing dependency groups."
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "GPL-v2" }
+classifiers = ["Programming Language :: Python :: 3"]
+dependencies = ["pip", "toml", "dahlia"]
+version = "0.1.0"
+
+[tool.setuptools]
+packages = ["groups"]
+
+[tool.groups.dev]
+requires-groups = ["linting", "typing"]
+
+[tool.groups.linting]
+requires = ["black", "isort"]
+
+[tool.groups.typing]
+requires = ["mypy", "types-toml"]
+
+[project.scripts]
+groups = "groups.__main__:main"
