@@ -1,3 +1,4 @@
+import sys
 import typing as t
 
 import dahlia
@@ -5,4 +6,4 @@ import dahlia
 
 def error(msg: str) -> t.NoReturn:
     dahlia.dprint(f"&c{msg}")
-    exit(1)
+    sys.exit(1)

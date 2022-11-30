@@ -19,7 +19,7 @@ class CommandLine:
                 "\n`install` - Install a dependency group."
                 # fmt: on
             )
-            exit(0)
+            sys.exit(0)
 
         if hasattr(self, sys.argv[1]):
             getattr(self, sys.argv[1])()
