@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dependency_groups"
+name = "busywork"
 description = "A package for managing dependency groups."
 readme = "README.md"
 requires-python = ">=3.7"
@@ -13,16 +13,16 @@ dependencies = ["pip", "toml", "dahlia"]
 version = "0.1.0"
 
 [tool.setuptools]
-packages = ["groups"]
+packages = ["busywork"]
 
-[tool.groups.dev]
+[tool.busywork.groups.dev]
 requires-groups = ["linting", "typing"]
 
-[tool.groups.linting]
+[tool.busywork.groups.linting]
 requires = ["black", "isort"]
 
-[tool.groups.typing]
+[tool.busywork.groups.typing]
 requires = ["mypy", "types-toml"]
 
 [project.scripts]
-groups = "groups.__main__:main"
+busywork = "busywork.__main__:main"

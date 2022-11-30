@@ -3,7 +3,7 @@ import sys
 
 from dahlia import dprint
 
-from groups.pyproject import Group
+from busywork.pyproject import Group
 
 INSTALLED_GROUPS = []
 GROUPS_TO_INSTALL = []

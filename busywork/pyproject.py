@@ -31,6 +31,6 @@ class Metadata:
     def __init__(self) -> None:
         data = toml.load("pyproject.toml")
 
-        groups: dict[str, t.Any] = data["tool"]["groups"]
+        groups: dict[str, t.Any] = data["tool"]["busywork"]["groups"]
 
         self.groups = {name: Group.from_str(name, groups) for name in groups.keys()}

@@ -9,14 +9,14 @@ or mypy.
 
 Add this to your pyproject.toml
 ```toml
-[tool.groups.linting]
+[tool.busywork.groups.linting]
 # PEP 440 dependency specification.
 requires = ["black", "isort"]
 
-[tool.groups.typing]
+[tool.busywork.groups.typing]
 requires = ["mypy", "types-toml"]
 
-[tool.groups.dev]
+[tool.busywork.groups.dev]
 # Nested groups
 requires = ["nox"]
 requires-groups = ["linting", "typing"]
@@ -24,8 +24,8 @@ requires-groups = ["linting", "typing"]
 
 Now install the group:
 
-`groups -g group-name`
+`busywork install -g group-name`
 
 Or all the groups:
 
-`groups --all`
+`busywork install --all`
