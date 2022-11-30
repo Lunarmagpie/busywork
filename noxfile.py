@@ -18,5 +18,4 @@ def format(session: nox.Session) -> None:
 def lint(session: nox.Session) -> None:
     session.run("groups", "-g", "linting")
     session.run("black", ".", "--check")
-    session.run("flake8")
     session.run("isort", ".", "--check")
