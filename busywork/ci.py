@@ -1,8 +1,9 @@
-from busywork.install import install_group, install_groups, install_remaining
-from busywork.utils import error
 import argparse
-from busywork.pyproject import Metadata
 import sys
+
+from busywork.install import install_group, install_groups, install_remaining
+from busywork.pyproject import Metadata
+from busywork.utils import error
 
 
 class CommandLine:
