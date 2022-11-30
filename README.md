@@ -1,4 +1,4 @@
-# Groups
+# Busywork
 
 Dependency group support using `pyproject.toml`. Dependency groups are dependencies
 that are used in development that the user does not need to install, such as black
