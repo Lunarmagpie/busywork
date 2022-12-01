@@ -3,7 +3,7 @@ from __future__ import annotations
 import dataclasses
 import typing as t
 
-import toml
+import tomli
 
 
 @dataclasses.dataclass
@@ -29,7 +29,8 @@ class Group:
 
 class Metadata:
     def __init__(self) -> None:
-        data = toml.load("pyproject.toml")
+        with open("pyproject.toml", "rb") as f:
+            data = tomli.load(f)
 
         groups: dict[str, t.Any] = data["tool"]["busywork"]["groups"]
 

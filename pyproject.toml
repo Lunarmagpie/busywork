@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.7"
 license = { text = "GPL-v2" }
 classifiers = ["Programming Language :: Python :: 3"]
-dependencies = ["pip", "toml", "dahlia"]
+dependencies = ["pip", "tomli", "dahlia"]
 version = "0.1.0"
 
 [tool.setuptools]
@@ -23,7 +23,7 @@ requires-groups = ["linting", "typing"]
 requires = ["black", "isort"]
 
 [tool.busywork.groups.typing]
-requires = ["mypy", "types-toml"]
+requires = ["mypy"]
 
 [project.scripts]
 busywork = "busywork.__main__:main"
