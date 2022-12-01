@@ -29,9 +29,15 @@ def install_group(group: Group) -> None:
 
 
 def install_remaining():
+    """
+    Install all dependency groups qeued to install if there are any.
+    """
+    if not groups_to_install:
+        return
     for group in groups_to_install:
         install_group(group)
-    dahlia.dprint("&aPackages succesfully installed!")
+        groups_to_install.remove(group)
+    install_remaining()
 
 
 def install(package: str) -> None:
