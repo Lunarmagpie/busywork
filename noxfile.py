@@ -6,8 +6,7 @@ def session(*groups: str):
         @nox.session(name=func.__name__)
         def session(session: nox.Session):
             session.install("busywork")
-            for group in groups:
-                session.run("busywork", "install", "-g", group)
+            session.run("busywork", "install", "-g", ",".join(groups))
             func(session)
 
         return session
