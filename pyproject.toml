@@ -19,14 +19,13 @@ Repository = "https://github.com/Lunarmagpie/busywork"
 packages = ["busywork"]
 
 [tool.busywork.groups.dev]
-requires = ["nox>=2022.11.21"]
 requires-groups = ["linting", "typing"]
 
 [tool.busywork.groups.linting]
 requires = ["black>=22.10.0", "isort>=5.10.1"]
 
 [tool.busywork.groups.typing]
-requires = ["mypy>=0.991"]
+requires = ["mypy>=0.991", "nox>=2022.11.21"]
 
 [tool.isort]
 profile = "black"

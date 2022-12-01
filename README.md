@@ -39,3 +39,18 @@ busywork install --this  # Install the current project. This is the equivalent t
 # arguments can also be combined, for example:
 busywork install --this --all  # Install the current project and all dependency groups.
 ```
+
+
+## Nox
+
+The `busywork.session` decorator can be used for nox sessions that require a dependency group.
+
+```python
+import busywork
+import nox
+
+# Install the typing dependency group.
+@busywork.session("typing")
+def typecheck(session: nox.Session) -> None:
+    session.run("mypy", "busywork")
+```
