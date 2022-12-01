@@ -40,7 +40,10 @@ class CommandLine:
         )
 
         parser.add_argument(
-            "-a", "--all", action="store_true", help="Install all groups."
+            "-a",
+            "--all",
+            action="store_true",
+            help="Install all groups. Mutiple groups can be seperated by commas.",
         )
         parser.add_argument(
             "-t", "--this", action="store_true", help="Install the current project."
@@ -63,12 +66,19 @@ class CommandLine:
 
         if getattr(args, "group", None):
             found_flag = True
-            try:
-                install_group(self.meta.groups[args.group])
-            except KeyError:
-                error(
-                    f'Can not install group "{args.group}" because group is not defined.'
-                )
+
+            if "," in args.group:
+                groups = args.group.split(",")
+            else:
+                groups = [args.group]
+
+            for group in groups:
+                if group not in self.meta.groups:
+                    error(
+                        f'Can not install group "{group}" because group is not defined.'
+                    )
+
+            install_groups(self.meta.groups[group] for group in groups)
 
         if getattr(args, "this", None):
             found_flag = True
