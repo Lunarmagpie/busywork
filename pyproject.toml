@@ -12,6 +12,9 @@ classifiers = ["Programming Language :: Python :: 3"]
 dependencies = ["pip", "tomli>=2.0.0", "dahlia>=2.1.2"]
 version = "0.1.0"
 
+[project.urls]
+Repository = "https://github.com/Lunarmagpie/busywork"
+
 [tool.setuptools]
 packages = ["busywork"]
 
