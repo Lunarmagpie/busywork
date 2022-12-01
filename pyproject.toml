@@ -10,7 +10,7 @@ requires-python = ">=3.8"
 license = { text = "GPL-v2" }
 classifiers = ["Programming Language :: Python :: 3"]
 dependencies = ["pip", "tomli>=2.0.0", "dahlia>=2.1.2"]
-version = "0.1.0"
+version = "0.1.0b1"
 
 [project.urls]
 Repository = "https://github.com/Lunarmagpie/busywork"
