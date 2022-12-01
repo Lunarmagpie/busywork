@@ -39,5 +39,5 @@ class Metadata:
         self.dependency_group = Group(
             name="project dependencies",
             groups=[],
-            packages=data["project"].get("dependencies", [])
+            packages=data["project"].get("dependencies", []),
         )
