@@ -9,21 +9,21 @@ readme = "README.md"
 requires-python = ">=3.7"
 license = { text = "GPL-v2" }
 classifiers = ["Programming Language :: Python :: 3"]
-dependencies = ["pip", "tomli", "dahlia"]
+dependencies = ["pip", "tomli>=2.0.0", "dahlia>=2.1.2"]
 version = "0.1.0"
 
 [tool.setuptools]
 packages = ["busywork"]
 
 [tool.busywork.groups.dev]
-requires = ["nox"]
+requires = ["nox>=2022.11.21"]
 requires-groups = ["linting", "typing"]
 
 [tool.busywork.groups.linting]
-requires = ["black", "isort"]
+requires = ["black>=22.10.0", "isort>=5.10.1"]
 
 [tool.busywork.groups.typing]
-requires = ["mypy"]
+requires = ["mypy>=0.991"]
 
 [project.scripts]
 busywork = "busywork.__main__:main"
