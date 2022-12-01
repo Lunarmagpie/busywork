@@ -32,6 +32,6 @@ busywork install --all  # Install all dependency groups.
 busywork install --dependencies  # Install the current project's dependencies.
 busywork install --this  # Install the current project. This is the equivalent to `pip install .`
 
-# argumetns can also be combined, for example:
+# arguments can also be combined, for example:
 busywork install --this --all  # Install the current project and all dependency groups.
 ```
