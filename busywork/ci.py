@@ -76,7 +76,7 @@ class CommandLine:
 
         if getattr(args, "dependencies", None):
             found_flag = True
-            install_group(self.meta.dependency_group)
+            install_group(self.meta.project_dependencies)
 
         if found_flag:
             install_remaining()

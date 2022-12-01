@@ -36,7 +36,7 @@ class Metadata:
 
         self.groups = {name: Group.from_str(name, groups) for name in groups.keys()}
 
-        self.dependency_group = Group(
+        self.project_dependencies = Group(
             name="project dependencies",
             groups=[],
             packages=data["project"].get("dependencies", []),
