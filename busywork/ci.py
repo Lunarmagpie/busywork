@@ -3,7 +3,8 @@ import sys
 
 import dahlia
 
-from busywork.install import install, install_group, install_groups, install_remaining
+from busywork.install import (install, install_group, install_groups,
+                              install_remaining)
 from busywork.pyproject import Metadata
 from busywork.utils import error
 
