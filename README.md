@@ -24,7 +24,11 @@ requires-groups = ["linting", "typing"]
 
 Now install the group:
 
-`busywork install -g group-name`
+`busywork install --group group-name`
+
+Groups can be separated by a comma for multiple groups.
+
+`busywork install --group group-one,group-two,group-three`
 
 Other options:
 ```sh
