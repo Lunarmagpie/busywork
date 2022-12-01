@@ -16,6 +16,7 @@ version = "0.1.0"
 packages = ["busywork"]
 
 [tool.busywork.groups.dev]
+requires = ["nox"]
 requires-groups = ["linting", "typing"]
 
 [tool.busywork.groups.linting]

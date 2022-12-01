@@ -19,13 +19,13 @@ def install_group(group: Group) -> None:
         return
     dahlia.dprint(f"&eInstalling group {group.name}:")
     installed_groups.append(group)
-    for package in group.packages:
-        install(package)
     if group.groups:
         groups_to_install.extend(group.groups)
         print(
             f"Queded installation for groups: {', '.join(group.name for group in group.groups)}:"
         )
+    for package in group.packages:
+        install(package)
 
 
 def install_remaining():

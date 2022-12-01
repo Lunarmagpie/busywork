@@ -4,7 +4,7 @@ import nox
 @nox.session
 def mypy(session: nox.Session) -> None:
     session.run("busywork", "install", "-g", "typing")
-    session.run("mypy", "groups")
+    session.run("mypy", "busywork")
 
 
 @nox.session(name="format")
