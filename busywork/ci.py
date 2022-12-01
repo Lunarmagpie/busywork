@@ -10,6 +10,9 @@ class CommandLine:
     def __init__(self) -> None:
         self.meta = Metadata()
 
+        if len(sys.argv) <= 1:
+            error("Expected at least one argument.")
+
         if sys.argv[1] == "-h":
             print(
                 # fmt: off
@@ -32,7 +35,6 @@ class CommandLine:
         parser = argparse.ArgumentParser(
             prog="Groups",
             description="Install dependency groups.",
-            epilog="Text at the bottom of help",
         )
 
         parser.add_argument(
