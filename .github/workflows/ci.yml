@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  push:
   pull_request:
 
 jobs:
@@ -11,7 +12,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
       - name: Install Nox
         run: pip install nox
       - name: Run Nox
@@ -24,7 +25,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
       - name: Install Nox
         run: pip install nox
       - name: Run Nox
