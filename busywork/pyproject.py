@@ -35,3 +35,9 @@ class Metadata:
         groups: dict[str, t.Any] = data["tool"]["busywork"]["groups"]
 
         self.groups = {name: Group.from_str(name, groups) for name in groups.keys()}
+
+        self.project_dependencies = Group(
+            name="project dependencies",
+            groups=[],
+            packages=data["project"].get("dependencies", []),
+        )

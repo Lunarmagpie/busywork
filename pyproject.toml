@@ -28,5 +28,8 @@ requires = ["black>=22.10.0", "isort>=5.10.1"]
 [tool.busywork.groups.typing]
 requires = ["mypy>=0.991"]
 
+[tool.isort]
+profile = "black"
+
 [project.scripts]
 busywork = "busywork.__main__:main"

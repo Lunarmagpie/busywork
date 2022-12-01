@@ -26,6 +26,12 @@ Now install the group:
 
 `busywork install -g group-name`
 
-Or all the groups:
+Other options:
+```sh
+busywork install --all  # Install all dependency groups.
+busywork install --dependencies  # Install the current project's dependencies.
+busywork install --this  # Install the current project. This is the equivalent to `pip install .`
 
-`busywork install --all`
+# arguments can also be combined, for example:
+busywork install --this --all  # Install the current project and all dependency groups.
+```
