@@ -9,7 +9,7 @@ def session(*groups: str):
     def inner(func):
         @nox.session(name=func.__name__)
         def session(session: nox.Session):
-            session.run("pip", "install", "busywork")
+            session.run("pip", "install", "--editable", ".")
             session.run("busywork", "install", "-g", ",".join(groups))
             func(session)
 
@@ -20,7 +20,6 @@ def session(*groups: str):
 
 @session("typing")
 def mypy(session: nox.Session) -> None:
-    session.run("busywork", "install", "--this")
     session.run("mypy", *TYPED_PATHS)
 
 
@@ -34,5 +33,5 @@ def format(session: nox.Session) -> None:
 def lint(session: nox.Session) -> None:
     session.run("ruff", *FORMAT_PATHS)
     session.run("black", *FORMAT_PATHS, "--check")
-    session.run("isort", *FORMAT_PATHS, "--check")
+    # session.run("isort", *FORMAT_PATHS, "--check")
     session.run("codespell", *SPELLCHECK_PATHS)
