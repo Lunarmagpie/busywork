@@ -33,5 +33,5 @@ def format(session: nox.Session) -> None:
 def lint(session: nox.Session) -> None:
     session.run("ruff", *FORMAT_PATHS)
     session.run("black", *FORMAT_PATHS, "--check")
-    session.run("isort", *FORMAT_PATHS, "--check", "--settings-path pyproject.toml")
+    session.run("isort", *FORMAT_PATHS, "--check", "--sp", "pyproject.toml")
     session.run("codespell", *SPELLCHECK_PATHS)
