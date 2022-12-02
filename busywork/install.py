@@ -44,5 +44,6 @@ def install(package: str) -> None:
     subprocess.check_call(
         [sys.executable, "-m", "pip", "install", package],
         stderr=subprocess.STDOUT,
-        stdout=subprocess.STDOUT,
+        stdout=None,
+        stdin=None,
     )
