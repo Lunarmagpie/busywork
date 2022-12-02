@@ -31,7 +31,7 @@ class CommandLine:
                 f"`{sys.argv[1]}` is not a valid subcommand. Type `busywork -h` to see the help menu."
             )
 
-    def install(self):
+    def install(self) -> None:
         parser = argparse.ArgumentParser(
             prog="Groups",
             description="Install dependency groups.",

@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import typing as t
 
 from busywork.pyproject import Group
 from busywork.utils import error, pretty_print
@@ -8,7 +9,7 @@ installed_groups = []
 groups_to_install = []
 
 
-def install_groups(groups: list[Group]) -> None:
+def install_groups(groups: t.Iterable[Group]) -> None:
     for group in groups:
         install_group(group)
 
@@ -27,7 +28,7 @@ def install_group(group: Group) -> None:
         install(package)
 
 
-def install_remaining():
+def install_remaining() -> None:
     """
     Install all dependency groups qeued to install if there are any.
     """

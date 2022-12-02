@@ -1,7 +1,7 @@
 from busywork.ci import CommandLine
 
 
-def main():
+def main() -> None:
     CommandLine()
 
 
