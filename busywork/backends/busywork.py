@@ -6,6 +6,7 @@ import shutil
 import sys
 import sysconfig
 import tarfile
+import threading
 import traceback
 
 import installer
@@ -21,8 +22,6 @@ import build.env
 from busywork.backends.backend import Backend
 from busywork.backends.pip import Pip
 from busywork.utils import error, pretty_print
-
-import threading
 
 TMP_PATH = pathlib.Path(".busywork")
 
