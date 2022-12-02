@@ -45,7 +45,7 @@ class Busywork(Backend):
             error(
                 f"Can not install package {package}"
                 "\nIf this error persists try setting busywork's backend to 'pip'"
-                "in pyproject.toml"
+                "in pyproject.toml."
                 "\n---------------"
                 "\n[tool.busywork]"
                 '\nbackend = "pip"'
