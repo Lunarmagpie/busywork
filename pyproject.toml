@@ -28,7 +28,7 @@ Repository = "https://github.com/Lunarmagpie/busywork"
 packages = ["busywork"]
 
 [tool.busywork]
-backend = "pip"
+backend = "busywork"
 
 [tool.busywork.groups.dev]
 requires = ["nox>=2022.11.21"]
