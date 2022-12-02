@@ -42,5 +42,5 @@ busywork install --this --all  # Install the current project and all dependency 
 
 ## Credits
 
-Dependency groups are inspired by poetry.
-The CLI visuals are inspired by nox. 
+- Dependency groups are inspired by poetry.
+- The CLI visuals are inspired by nox. 
