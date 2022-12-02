@@ -54,6 +54,10 @@ profile = "black"
 [tool.mypy]
 strict = true
 
+[[tool.mypy.overrides]]
+module = ["installer.*"]
+ignore_missing_imports = true
+
 [tool.ruff]
 line-length = 88
 
