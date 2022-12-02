@@ -1,4 +1,3 @@
-import traceback
 import typing as t
 
 from busywork.pyproject import META, Group
