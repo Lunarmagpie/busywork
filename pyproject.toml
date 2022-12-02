@@ -23,13 +23,24 @@ requires = ["nox>=2022.11.21"]
 requires-groups = ["linting", "typing"]
 
 [tool.busywork.groups.linting]
-requires = ["black>=22.10.0", "isort>=5.10.1"]
+requires = [
+    "black>=22.10.0",
+    "isort>=5.10.1",
+    "ruff>=0.0.151",
+    "codespell>=2.2.2",
+]
 
 [tool.busywork.groups.typing]
 requires = ["mypy>=0.991"]
 
 [tool.isort]
 profile = "black"
+
+[tool.mypy]
+strict = true
+
+[tool.ruff]
+line-length = 88
 
 [project.scripts]
 busywork = "busywork.__main__:main"

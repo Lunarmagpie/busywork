@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import typing as t
 
 from busywork.pyproject import Group
 from busywork.utils import error, pretty_print
@@ -8,7 +9,7 @@ installed_groups = []
 groups_to_install = []
 
 
-def install_groups(groups: list[Group]) -> None:
+def install_groups(groups: t.Iterable[Group]) -> None:
     for group in groups:
         install_group(group)
 
@@ -21,13 +22,14 @@ def install_group(group: Group) -> None:
     if group.groups:
         groups_to_install.extend(group.groups)
         pretty_print(
-            f"Queded installation for groups: {', '.join(group.name for group in group.groups)}."
+            "Queded installation for groups:"
+            f" {', '.join(group.name for group in group.groups)}."
         )
     for package in group.packages:
         install(package)
 
 
-def install_remaining():
+def install_remaining() -> None:
     """
     Install all dependency groups qeued to install if there are any.
     """

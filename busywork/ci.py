@@ -28,10 +28,11 @@ class CommandLine:
             getattr(self, sys.argv[1])()
         else:
             error(
-                f"`{sys.argv[1]}` is not a valid subcommand. Type `busywork -h` to see the help menu."
+                f"`{sys.argv[1]}` is not a valid subcommand."
+                " Type `busywork -h` to see the help menu."
             )
 
-    def install(self):
+    def install(self) -> None:
         parser = argparse.ArgumentParser(
             prog="Groups",
             description="Install dependency groups.",
@@ -41,7 +42,7 @@ class CommandLine:
             "-a",
             "--all",
             action="store_true",
-            help="Install all groups. Mutiple groups can be seperated by commas.",
+            help="Install all groups. Multiple groups can be separated by commas.",
         )
         parser.add_argument(
             "-t", "--this", action="store_true", help="Install the current project."
@@ -91,4 +92,4 @@ class CommandLine:
         else:
             error("No group provided.")
 
-        pretty_print("&aPackages succesfully installed!")
+        pretty_print("&aPackages successfully installed!")
