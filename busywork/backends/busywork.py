@@ -97,10 +97,10 @@ class Busywork(Backend):
             f.write(resp.content)
 
         if pkg.link.filename.endswith(".whl"):
-            self.install_wheel(pkg, tmp_path)
+            self.install_wheel(requirement, tmp_path)
             return
 
-        self.install_sdist(pkg, tmp_path)
+        self.install_sdist(requirement, tmp_path)
 
     def is_installed(self, req: packaging.requirements.Requirement) -> bool:
         """
@@ -108,18 +108,20 @@ class Busywork(Backend):
         """
         try:
             if req.specifier.contains(importlib.metadata.version(req.name)):
-                self.resolve_dependencies(req.name)
+                self.resolve_dependencies(req)
                 return True
         except importlib.metadata.PackageNotFoundError:
             return False
         return False
 
-    def install_wheel(self, pkg: unearth.Package, path: pathlib.Path) -> None:
+    def install_wheel(
+        self, req: packaging.requirements.Requirement, path: pathlib.Path
+    ) -> None:
         """
         Install a wheel.
         """
         pretty_print(
-            f"Wheel found!!! Installing wheel for package {pkg.name}.", arrow=False
+            f"Wheel found!!! Installing wheel for package {req.name}.", arrow=False
         )
 
         try:
@@ -137,21 +139,21 @@ class Busywork(Backend):
                 )
         except FileExistsError:
             pretty_print(
-                f"Failed to install {pkg.name} because it is already installed.",
+                f"Failed to install {req.name} because it is already installed.",
                 arrow=False,
             )
-            print(pkg.name)
-            error("123")
         path.unlink()
 
-        self.resolve_dependencies(pkg.name)
+        self.resolve_dependencies(req)
 
-    def install_sdist(self, pkg: unearth.Package, tar_path: pathlib.Path) -> None:
+    def install_sdist(
+        self, req: packaging.requirements.Requirement, tar_path: pathlib.Path
+    ) -> None:
         """
         Build a wheel then install that wheel.
         """
         pretty_print(
-            f"No wheel :(\nBuilding wheel for package {pkg.name} with build."
+            f"No wheel :(\nBuilding wheel for package {req} with build."
             " Get a cup of coffee, this might take a while.",
             arrow=False,
         )
@@ -178,29 +180,31 @@ class Busywork(Backend):
         tar_path.unlink()
         shutil.rmtree(extract_path)
 
-        self.install_wheel(pkg, TMP_PATH / built)
+        self.install_wheel(req, TMP_PATH / built)
 
-    def resolve_dependencies(self, package: str) -> None:
-        deps = importlib.metadata.requires(package)
+    def resolve_dependencies(
+        self, requirement: packaging.requirements.Requirement
+    ) -> None:
+        deps = importlib.metadata.requires(requirement.name)
 
         if not deps:
             return
 
-        version = packaging.requirements.Requirement(
-            importlib.metadata.version(package)
-        )
-
-        pretty_print(f"Installing dependencies for {package}", arrow=False)
+        pretty_print(f"Installing dependencies for {requirement}", arrow=False)
 
         dependencies: list[packaging.requirements.Requirement] = [
             packaging.requirements.Requirement(dep) for dep in deps
         ]
-        extra_markers = [
-            packaging.markers.Marker(f"extra == {extra}") for extra in version.extras
-        ]
 
         for dep in dependencies:
-            if dep.marker and dep.marker not in extra_markers:
-                return
+            # if dep.marker and dep.marker not in extra_markers:
+            # return
+            if not dep.marker:
+                self.install_requirement(dep)
+                continue
 
-            self.install_requirement(dep)
+            if any(
+                dep.marker.evaluate({"extra": extra}) for extra in requirement.extras
+            ):
+                self.install_requirement(dep)
+                continue
