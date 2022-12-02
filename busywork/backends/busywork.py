@@ -1,6 +1,7 @@
 import unearth
 import installer
 import build
+import build.env
 import requests
 import pathlib
 import tarfile
@@ -46,7 +47,7 @@ class Busywork(Backend):
         with open(tmp_path, "wb") as f:
             f.write(resp.content)
 
-        if matches.best.link.filename.endswith("*.whl"):
+        if matches.best.link.filename.endswith(".whl"):
             self.install_wheel(pkg, tmp_path)
 
         self.install_sdist(pkg, tmp_path)
@@ -72,7 +73,7 @@ class Busywork(Backend):
 
     def install_sdist(self, pkg: unearth.Package, zip_path: pathlib.Path):
         extract_path = pathlib.Path(f".busywork/extract/")
-        wheel_path = extract_path / zip_path.stem.removesuffix(".tar")
+        lib_path = extract_path / zip_path.stem.removesuffix(".tar")
 
         if extract_path.exists():
             shutil.rmtree(extract_path)
@@ -80,8 +81,14 @@ class Busywork(Backend):
         with tarfile.open(zip_path) as tar:
             tar.extractall(extract_path)
 
-        builder = build.ProjectBuilder(wheel_path, python_executable=sys.executable)
+        builder = build.ProjectBuilder(lib_path)
 
-        builder.build("wheel", output_directory=pathlib.Path(".busywork"))
+        with build.env.IsolatedEnvBuilder() as env:
+            builder.executable = env.executable
 
-        self.install_wheel(pkg, wheel_path)
+            env.install(builder.build_system_requires)
+            # then get the extra required dependencies from the backend (which was installed in the call above :P)
+            env.install(builder.get_requires_for_build("wheel"))
+            builder.build("wheel", output_directory=pathlib.Path(".busywork"))
+
+        # self.install_wheel(pkg, wheel_path)
