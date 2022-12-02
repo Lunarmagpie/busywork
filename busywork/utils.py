@@ -13,10 +13,5 @@ def error(msg: str) -> t.NoReturn:
 
 
 def pretty_print(msg: str):
-
-    msg = f"&3busywork > &r{msg}"
-
-    if os.environ.get("NO_COLOR"):
-        msg = dahlia.clean_ansi(msg)
-
-    dahlia.dprint(msg, depth=dahlia.Depth.TTY)
+    print(os.environ["NO_COLOR"])
+    dahlia.dprint(f"&3busywork > &r{msg}", depth=dahlia.Depth.TTY)
