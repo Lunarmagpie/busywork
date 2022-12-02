@@ -41,6 +41,11 @@ def install_remaining():
 
 def install(package: str) -> None:
     pretty_print(f"&6Installing package {package} through pip:")
+
+    # Flushing stdout ensures `print` output shows before the subprocess output.
+    # Speed doesn't matter here anyway so this solution is fine.
+    sys.stdout.flush()
+
     subprocess.check_call(
         [sys.executable, "-m", "pip", "install", package],
         stderr=subprocess.STDOUT,

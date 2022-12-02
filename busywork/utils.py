@@ -13,4 +13,3 @@ def error(msg: str) -> t.NoReturn:
 
 def pretty_print(msg: str):
     dahlia.dprint(f"&3busywork > &r{msg}", depth=dahlia.Depth.TTY)
-    sys.stdout.flush()
