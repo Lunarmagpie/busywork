@@ -28,7 +28,8 @@ class CommandLine:
             getattr(self, sys.argv[1])()
         else:
             error(
-                f"`{sys.argv[1]}` is not a valid subcommand. Type `busywork -h` to see the help menu."
+                f"`{sys.argv[1]}` is not a valid subcommand."
+                " Type `busywork -h` to see the help menu."
             )
 
     def install(self) -> None:

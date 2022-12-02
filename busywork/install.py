@@ -22,7 +22,8 @@ def install_group(group: Group) -> None:
     if group.groups:
         groups_to_install.extend(group.groups)
         pretty_print(
-            f"Queded installation for groups: {', '.join(group.name for group in group.groups)}."
+            "Queded installation for groups:"
+            f" {', '.join(group.name for group in group.groups)}."
         )
     for package in group.packages:
         install(package)

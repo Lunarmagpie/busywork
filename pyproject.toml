@@ -34,5 +34,8 @@ profile = "black"
 [tool.mypy]
 strict = true
 
+[tool.ruff]
+line-length = 88
+
 [project.scripts]
 busywork = "busywork.__main__:main"
