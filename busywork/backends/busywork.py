@@ -203,6 +203,8 @@ class Busywork(Backend):
                 self.install_requirement(dep)
                 continue
 
+            print(packaging.markers.default_environment())
+
             if any(
                 dep.marker.evaluate({"extra": extra}) for extra in requirement.extras
             ):
