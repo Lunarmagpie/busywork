@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 from busywork.pyproject import Group
-from busywork.utils import pretty_print
+from busywork.utils import pretty_print, error
 
 installed_groups = []
 groups_to_install = []
@@ -46,7 +46,10 @@ def install(package: str) -> None:
     # Speed doesn't matter here anyway so this solution is fine.
     sys.stdout.flush()
 
-    subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", package],
-        stderr=subprocess.STDOUT,
-    )
+    try:
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", package],
+            stderr=subprocess.STDOUT,
+        )
+    except subprocess.SubprocessError:
+        error(f"Could not install package {package}. This is a problem with pip.")
