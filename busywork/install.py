@@ -41,9 +41,7 @@ def install_remaining():
 
 def install(package: str) -> None:
     pretty_print(f"&6Installing package {package} through pip:")
-    subprocess.run(
+    subprocess.check_call(
         [sys.executable, "-m", "pip", "install", package],
         stderr=subprocess.STDOUT,
-        stdout=None,
-        stdin=None,
     )
