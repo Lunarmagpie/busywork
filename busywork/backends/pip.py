@@ -11,7 +11,7 @@ from busywork.utils import error
 class Pip(Backend):
     @property
     def name(self) -> str:
-        return "busywork backend"
+        return "pip"
 
     def install_package(self, package: str) -> None:
         # Flushing stdout ensures `print` output shows before the subprocess output.
