@@ -203,12 +203,16 @@ class Busywork(Backend):
                 self.install_requirement(dep)
                 continue
 
-            print(packaging.markers.default_environment())
+            try:
+                # If the marker can evaluate without extras, we say it can be installed.
+                should_install = dep.marker.evaluate({})
+            except packaging.markers.UndefinedEnvironmentName:
+                # Otherwise we need to check if it can be evaluated with any of the extras.
+                should_install = any(
+                    dep.marker.evaluate({"extra": extra})
+                    for extra in requirement.extras
+                )
 
-            print(dep.marker.evaluate({"extra": "abcd"}))
-
-            if any(
-                dep.marker.evaluate({"extra": extra}) for extra in requirement.extras
-            ):
+            if should_install:
                 self.install_requirement(dep)
                 continue
