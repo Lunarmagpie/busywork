@@ -7,7 +7,7 @@ __all__: t.Sequence = ("error", "pretty_print")
 
 
 def error(msg: str) -> t.NoReturn:
-    pretty_print(f"&c* {msg}")
+    pretty_print(f"&cError: {msg}")
     sys.exit(1)
 
 

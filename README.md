@@ -39,3 +39,8 @@ busywork install --this  # Install the current project. This is the equivalent t
 # arguments can also be combined, for example:
 busywork install --this --all  # Install the current project and all dependency groups.
 ```
+
+## Credits
+
+Dependency groups are inspired by poetry.
+The CLI visuals are inspired by nox. 
