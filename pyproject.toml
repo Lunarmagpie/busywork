@@ -45,6 +45,9 @@ requires = [
 [tool.busywork.groups.typing]
 requires = ["mypy>=0.991", "types-requests"]
 
+[tool.black]
+line-length = 88
+
 [tool.isort]
 profile = "black"
 
