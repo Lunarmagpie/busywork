@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 from busywork.pyproject import Group
-from busywork.utils import pretty_print, error
+from busywork.utils import error, pretty_print
 
 installed_groups = []
 groups_to_install = []
