@@ -35,10 +35,17 @@ class Busywork(Backend):
         self.package_finder = unearth.PackageFinder(
             index_urls=["https://pypi.org/simple/"]
         )
+        self.indentation = 0
+
+    def get_indents(self, n: int) -> str:
+        return " " * (self.indentation + n) * 2
 
     @property
     def name(self) -> str:
         return "busywork backend"
+
+    def indent_print(self, msg: str, arrow: bool = False) -> None:
+        pretty_print(f"{self.get_indents(0)}{msg}", arrow=arrow)
 
     def install_package(self, package: str) -> None:
         try:
@@ -61,7 +68,7 @@ class Busywork(Backend):
             """
             Packaging can't parse @ in a requirement so this is yielded to pip.
             """
-            pretty_print(f"Installing '{package}' with pip", arrow=False)
+            self.indent_print(f"Installing '{package}' with pip", arrow=False)
             self.pip_builder.install_package(package)
             return
 
@@ -72,11 +79,6 @@ class Busywork(Backend):
         self, requirement: packaging.requirements.Requirement
     ) -> None:
         if self.is_installed(requirement):
-            pretty_print(
-                f"Skipping installing {requirement.name} because package is already"
-                " installed.",
-                arrow=False,
-            )
             return
 
         TMP_PATH.mkdir(exist_ok=True)
@@ -108,6 +110,11 @@ class Busywork(Backend):
         """
         try:
             if req.specifier.contains(importlib.metadata.version(req.name)):
+                self.indent_print(
+                    f"Skipping installing {req.name} because package is already"
+                    " installed.",
+                    arrow=False,
+                )
                 self.resolve_dependencies(req)
                 return True
         except importlib.metadata.PackageNotFoundError:
@@ -120,7 +127,7 @@ class Busywork(Backend):
         """
         Install a wheel.
         """
-        pretty_print(
+        self.indent_print(
             f"Wheel found!!! Installing wheel for package {req.name}.", arrow=False
         )
 
@@ -138,7 +145,7 @@ class Busywork(Backend):
                     },
                 )
         except FileExistsError:
-            pretty_print(
+            self.indent_print(
                 f"Failed to install {req.name} because it is already installed.",
                 arrow=False,
             )
@@ -152,7 +159,7 @@ class Busywork(Backend):
         """
         Build a wheel then install that wheel.
         """
-        pretty_print(
+        self.indent_print(
             f"No wheel :(\nBuilding wheel for package {req} with build."
             " Get a cup of coffee, this might take a while.",
             arrow=False,
@@ -190,17 +197,17 @@ class Busywork(Backend):
         if not deps:
             return
 
-        pretty_print(f"Installing dependencies for {requirement}", arrow=False)
-
         dependencies: list[packaging.requirements.Requirement] = [
             packaging.requirements.Requirement(dep) for dep in deps
         ]
+
+        dep_queue = []
 
         for dep in dependencies:
             # if dep.marker and dep.marker not in extra_markers:
             # return
             if not dep.marker:
-                self.install_requirement(dep)
+                dep_queue.append(dep)
                 continue
 
             try:
@@ -214,5 +221,19 @@ class Busywork(Backend):
                 )
 
             if should_install:
-                self.install_requirement(dep)
+                dep_queue.append(dep)
                 continue
+
+        if not dep_queue:
+            return
+
+        self.indent_print(
+            f"Installing dependencies for {requirement.name}.", arrow=False
+        )
+
+        self.indentation += 1
+
+        for dep in dep_queue:
+            self.install_requirement(dep)
+
+        self.indentation -= 1
