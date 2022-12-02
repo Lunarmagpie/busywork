@@ -22,6 +22,8 @@ from busywork.backends.backend import Backend
 from busywork.backends.pip import Pip
 from busywork.utils import error, pretty_print
 
+import threading
+
 TMP_PATH = pathlib.Path(".busywork")
 
 
@@ -233,7 +235,15 @@ class Busywork(Backend):
 
         self.indentation += 1
 
-        for dep in dep_queue:
-            self.install_requirement(dep)
+        threads = [
+            threading.Thread(target=self.install_requirement, args=(dep,))
+            for dep in dep_queue
+        ]
+
+        for thread in threads:
+            thread.start()
+
+        for thread in threads:
+            thread.join()
 
         self.indentation -= 1
