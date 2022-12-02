@@ -44,14 +44,9 @@ def install_remaining() -> None:
 def install(package: str) -> None:
     pretty_print(f"&6Installing package {package} through pip:")
 
-    # Flushing stdout ensures `print` output shows before the subprocess output.
-    # Speed doesn't matter here anyway so this solution is fine.
-    sys.stdout.flush()
+    from busywork.backends.busywork import Busywork 
+    # from busywork.backends.pip import Pip
 
-    try:
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", package],
-            stderr=subprocess.STDOUT,
-        )
-    except subprocess.SubprocessError:
-        error(f"Could not install package {package}. This is a problem with pip.")
+    # backend = Pip()
+    backend = Busywork()
+    backend.install_package(package)
