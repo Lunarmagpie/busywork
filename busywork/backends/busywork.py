@@ -45,12 +45,12 @@ class Busywork(Backend):
     def name(self) -> str:
         return "busywork backend"
 
-    def indent_print(self, msg: str, arrow: bool = False) -> None:
-        pretty_print(f"{self.get_indents(0)}{msg}", arrow=arrow)
+    def indent_print(self, msg: str, n: int = 0, arrow: bool = False) -> None:
+        pretty_print(f"{self.get_indents(n)}{msg}", arrow=arrow)
 
     def install_package(self, package: str) -> None:
         try:
-            self.install_package_unsafe(package)
+            self.install_package_inner(package)
         except Exception:
             traceback.print_exc()
 
@@ -64,7 +64,7 @@ class Busywork(Backend):
                 "\n---------------"
             )
 
-    def install_package_unsafe(self, package: str) -> None:
+    def install_package_inner(self, package: str) -> None:
         if "@" in package:
             """
             Packaging can't parse @ in a requirement so this is yielded to pip.
@@ -91,8 +91,8 @@ class Busywork(Backend):
         if not pkg:
             error(f"Can't install package {requirement.name} because it doesn't exist.")
 
-        # Download the package
         resp = requests.get(pkg.link.url)
+        self.indent_print(f"Downloaded archive for {requirement.name}.")
 
         tmp_path = pathlib.Path(".busywork/") / pkg.link.filename
 
@@ -129,7 +129,7 @@ class Busywork(Backend):
         Install a wheel.
         """
         self.indent_print(
-            f"Wheel found!!! Installing wheel for package {req.name}.", arrow=False
+            "Wheel found!!! Installing package with wheel.", arrow=False, n=1
         )
 
         try:
@@ -161,9 +161,16 @@ class Busywork(Backend):
         Build a wheel then install that wheel.
         """
         self.indent_print(
-            f"No wheel :(\nBuilding wheel for package {req} with build."
+            "No wheel :(",
+            arrow=False,
+            n=1,
+        )
+
+        self.indent_print(
+            "Building wheel for package with build."
             " Get a cup of coffee, this might take a while.",
             arrow=False,
+            n=1,
         )
 
         extract_path = pathlib.Path(".busywork/extract/")
@@ -179,9 +186,7 @@ class Busywork(Backend):
 
         with build.env.IsolatedEnvBuilder() as env:
             builder.python_executable = env.executable
-
             env.install(builder.build_system_requires)
-
             env.install(builder.get_requires_for_build("wheel"))
             built = builder.build("wheel", output_directory=TMP_PATH)
 
