@@ -1,11 +1,9 @@
 import argparse
 import sys
 
-import dahlia
-
 from busywork.install import install, install_group, install_groups, install_remaining
 from busywork.pyproject import Metadata
-from busywork.utils import error
+from busywork.utils import error, pretty_print
 
 
 class CommandLine:
@@ -93,4 +91,4 @@ class CommandLine:
         else:
             error("No group provided.")
 
-        dahlia.dprint("&aPackages succesfully installed!")
+        pretty_print("&aPackages succesfully installed!")

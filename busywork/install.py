@@ -1,9 +1,8 @@
 import subprocess
 import sys
 
-import dahlia
-
 from busywork.pyproject import Group
+from busywork.utils import pretty_print
 
 installed_groups = []
 groups_to_install = []
@@ -17,12 +16,12 @@ def install_groups(groups: list[Group]) -> None:
 def install_group(group: Group) -> None:
     if group in installed_groups:
         return
-    dahlia.dprint(f"&eInstalling group {group.name}:")
+    pretty_print(f"&eInstalling group {group.name}:")
     installed_groups.append(group)
     if group.groups:
         groups_to_install.extend(group.groups)
-        print(
-            f"Queded installation for groups: {', '.join(group.name for group in group.groups)}:"
+        pretty_print(
+            f"Queded installation for groups: {', '.join(group.name for group in group.groups)}."
         )
     for package in group.packages:
         install(package)
@@ -41,7 +40,7 @@ def install_remaining():
 
 
 def install(package: str) -> None:
-    dahlia.dprint(f"&gInstalling package {package}:")
+    pretty_print(f"&6Installing package {package} through pip:")
     subprocess.check_call(
         [sys.executable, "-m", "pip", "install", package],
     )

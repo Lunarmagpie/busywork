@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "GPL-v2" }
 classifiers = ["Programming Language :: Python :: 3"]
-dependencies = ["pip", "tomli>=2.0.0", "dahlia>=2.1.2"]
+dependencies = ["pip", "tomli>=2.0.0", "dahlia>=2.1.3"]
 version = "0.1.0b1"
 
 [project.urls]

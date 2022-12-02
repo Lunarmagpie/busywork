@@ -3,7 +3,13 @@ import typing as t
 
 import dahlia
 
+__all__: t.Sequence = ("error", "pretty_print")
+
 
 def error(msg: str) -> t.NoReturn:
-    dahlia.dprint(f"&c{msg}")
+    pretty_print(f"&c* {msg}")
     sys.exit(1)
+
+
+def pretty_print(msg: str):
+    dahlia.dprint(f"&3busywork > &r{msg}", depth=dahlia.Depth.TTY)
