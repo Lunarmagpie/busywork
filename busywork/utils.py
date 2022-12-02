@@ -11,5 +11,5 @@ def error(msg: str) -> t.NoReturn:
     sys.exit(1)
 
 
-def pretty_print(msg: str) -> None:
-    dahlia.dprint(f"&3busywork > &r{msg}", depth=dahlia.Depth.TTY)
+def pretty_print(msg: str, arrow: bool = True) -> None:
+    dahlia.dprint(f"{'&3busywork > &r' if arrow else ''}{msg}", depth=dahlia.Depth.TTY)

@@ -4,8 +4,9 @@ The pip backend.
 import subprocess
 import sys
 
-from busywork.utils import error
 from busywork.backends.backend import Backend
+from busywork.utils import error
+
 
 class Pip(Backend):
     @property

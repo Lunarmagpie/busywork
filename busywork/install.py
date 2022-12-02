@@ -44,9 +44,9 @@ def install_remaining() -> None:
 def install(package: str) -> None:
     pretty_print(f"&6Installing package {package} through pip:")
 
-    from busywork.backends.busywork import Busywork 
-    # from busywork.backends.pip import Pip
+    from busywork.backends.busywork import Busywork
 
+    # from busywork.backends.pip import Pip
     # backend = Pip()
     backend = Busywork()
     backend.install_package(package)
