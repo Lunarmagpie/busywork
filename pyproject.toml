@@ -49,6 +49,7 @@ requires = ["mypy>=0.991", "types-requests"]
 line-length = 88
 
 [tool.isort]
+line_length = 88
 profile = "black"
 
 [tool.mypy]
