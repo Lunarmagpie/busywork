@@ -1,4 +1,5 @@
 import sys
+import os
 import typing as t
 
 import dahlia
@@ -12,4 +13,10 @@ def error(msg: str) -> t.NoReturn:
 
 
 def pretty_print(msg: str):
-    dahlia.dprint(f"&3busywork > &r{msg}", depth=dahlia.Depth.TTY)
+
+    msg = f"&3busywork > &r{msg}"
+
+    if os.environ.get("NO_COLOR"):
+        msg = dahlia.clean_ansi(msg)
+
+    dahlia.dprint(msg, depth=dahlia.Depth.TTY)
