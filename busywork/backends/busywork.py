@@ -14,6 +14,7 @@ from installer.sources import WheelFile
 import build
 import build.env
 from busywork.backends.backend import Backend
+from busywork.backends.pip import Pip
 from busywork.utils import pretty_print
 
 TMP_PATH = pathlib.Path(".busywork")
@@ -25,6 +26,7 @@ class Busywork(Backend):
     """
 
     def __init__(self) -> None:
+        self.pip_builder = Pip()
         self.package_finder = unearth.PackageFinder(
             index_urls=["https://pypi.org/simple/"]
         )
@@ -34,6 +36,17 @@ class Busywork(Backend):
         return "busywork backend"
 
     def install_package(self, package: str) -> None:
+        if "@" in package:
+            """
+            Packaging can't parse @ in a requirement so this is yielded to pip.
+            """
+            spaceless_req = "".join(package.split(" "))
+            pip_req = spaceless_req.removeprefix("pip@")
+
+            pretty_print(f"Installing '{pip_req}' with pip")
+            self.pip_builder.install_package(pip_req)
+            return
+
         requirement = packaging.requirements.Requirement(package)
 
         if self.is_installed(requirement):
@@ -68,7 +81,9 @@ class Busywork(Backend):
         self.install_sdist(pkg, tmp_path)
 
     def is_installed(self, req: packaging.requirements.Requirement) -> bool:
-
+        """
+        Return `True` if a package is current installed.
+        """
         for path in sys.path:
             for dir in pathlib.Path(path).glob("*.dist-info"):
                 with (dir / "METADATA").open() as f:
@@ -83,6 +98,9 @@ class Busywork(Backend):
         return False
 
     def install_wheel(self, pkg: unearth.Package, path: pathlib.Path) -> None:
+        """
+        Install a wheel.
+        """
         pretty_print(
             f"Wheel found!!! Installing wheel for package {pkg.name}.", arrow=False
         )
@@ -108,6 +126,9 @@ class Busywork(Backend):
         path.unlink()
 
     def install_sdist(self, pkg: unearth.Package, tar_path: pathlib.Path) -> None:
+        """
+        Build a wheel then install that wheel.
+        """
         pretty_print(
             f"No wheel :(\nBuilding wheel for package {pkg.name} with build."
             " Get a cup of coffee, this might take a while.",

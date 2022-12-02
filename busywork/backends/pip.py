@@ -24,4 +24,7 @@ class Pip(Backend):
         )
 
         if output.returncode != 0:
-            error(f"Could not install package {package}. This is a problem with pip.")
+            error(
+                f"Could not install package {package} because there was a problem"
+                " with pip."
+            )
