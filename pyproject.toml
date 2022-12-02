@@ -23,7 +23,12 @@ requires = ["nox>=2022.11.21"]
 requires-groups = ["linting", "typing"]
 
 [tool.busywork.groups.linting]
-requires = ["black>=22.10.0", "isort>=5.10.1", "ruff>=0.0.151"]
+requires = [
+    "black>=22.10.0",
+    "isort>=5.10.1",
+    "ruff>=0.0.151",
+    "codespell>=2.2.2",
+]
 
 [tool.busywork.groups.typing]
 requires = ["mypy>=0.991"]

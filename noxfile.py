@@ -1,5 +1,9 @@
 import nox
 
+FORMAT_PATHS = ["busywork", "noxfile.py"]
+SPELLCHECK_PATHS = ["busywork", "noxfile.py", "README.md", "pyproject.toml"]
+TYPED_PATHS = ["busywork"]
+
 
 def session(*groups: str):
     def inner(func):
@@ -16,16 +20,18 @@ def session(*groups: str):
 
 @session("typing")
 def mypy(session: nox.Session) -> None:
-    session.run("mypy", "busywork")
+    session.run("mypy", *TYPED_PATHS)
 
 
 @session("linting")
 def format(session: nox.Session) -> None:
-    session.run("black", ".")
-    session.run("isort", ".")
+    session.run("black", *FORMAT_PATHS)
+    session.run("isort", *FORMAT_PATHS)
 
 
 @session("linting")
 def lint(session: nox.Session) -> None:
-    session.run("black", ".", "--check")
-    session.run("isort", ".", "--check")
+    session.run("ruff", *FORMAT_PATHS)
+    session.run("black", *FORMAT_PATHS, "--check")
+    session.run("isort", *FORMAT_PATHS, "--check")
+    session.run("codespell", *SPELLCHECK_PATHS)
