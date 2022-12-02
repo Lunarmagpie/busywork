@@ -3,6 +3,7 @@ import shutil
 import sys
 import sysconfig
 import tarfile
+import traceback
 
 import installer
 import packaging.requirements
@@ -15,7 +16,7 @@ import build
 import build.env
 from busywork.backends.backend import Backend
 from busywork.backends.pip import Pip
-from busywork.utils import pretty_print
+from busywork.utils import error, pretty_print
 
 TMP_PATH = pathlib.Path(".busywork")
 
@@ -36,15 +37,28 @@ class Busywork(Backend):
         return "busywork backend"
 
     def install_package(self, package: str) -> None:
+        try:
+            self.install_package_unsafe(package)
+        except Exception:
+            traceback.print_exc()
+
+            error(
+                f"Can not install package {package}"
+                "\nIf this error persists try setting busywork's backend to 'pip'"
+                "in pyproject.toml"
+                "\n---------------"
+                "\n[tool.busywork]"
+                '\nbackend = "pip"'
+                "\n---------------"
+            )
+
+    def install_package_unsafe(self, package: str) -> None:
         if "@" in package:
             """
             Packaging can't parse @ in a requirement so this is yielded to pip.
             """
-            spaceless_req = "".join(package.split(" "))
-            pip_req = spaceless_req.removeprefix("pip@")
-
-            pretty_print(f"Installing '{pip_req}' with pip")
-            self.pip_builder.install_package(pip_req)
+            pretty_print(f"Installing '{package}' with pip", arrow=False)
+            self.pip_builder.install_package(package)
             return
 
         requirement = packaging.requirements.Requirement(package)

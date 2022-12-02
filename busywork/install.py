@@ -1,9 +1,8 @@
-import subprocess
-import sys
+import traceback
 import typing as t
 
-from busywork.pyproject import Group
-from busywork.utils import error, pretty_print
+from busywork.pyproject import META, Group
+from busywork.utils import pretty_print
 
 installed_groups = []
 groups_to_install = []
@@ -42,11 +41,6 @@ def install_remaining() -> None:
 
 
 def install(package: str) -> None:
-    pretty_print(f"&6Installing package {package} through pip:")
+    pretty_print(f"&6Installing package {package} with {META.backend.name}:")
 
-    from busywork.backends.busywork import Busywork
-
-    # from busywork.backends.pip import Pip
-    # backend = Pip()
-    backend = Busywork()
-    backend.install_package(package)
+    META.backend.install_package(package)
