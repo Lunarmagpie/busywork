@@ -205,6 +205,8 @@ class Busywork(Backend):
 
             print(packaging.markers.default_environment())
 
+            print(dep.marker.evaluate({"extra": "abcd"}))
+
             if any(
                 dep.marker.evaluate({"extra": extra}) for extra in requirement.extras
             ):
