@@ -1,16 +1,16 @@
 from __future__ import annotations
 
+import importlib.metadata
 import pathlib
 import shutil
 import sys
 import sysconfig
 import tarfile
 import traceback
-import importlib.metadata
 
 import installer
-import packaging.requirements
 import packaging.markers
+import packaging.requirements
 import requests
 import unearth
 from installer.destinations import SchemeDictionaryDestination
