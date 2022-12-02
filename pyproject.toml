@@ -45,8 +45,8 @@ requires = [
 [tool.busywork.groups.typing]
 requires = ["mypy>=0.991", "types-requests"]
 
-[tool.busywork.groups.pip]
-requires = ["hikari-crescent@git+https://github.com/magpie-dev/hikari-crescent"]
+[tool.busywork.groups.test]
+requires = ["sigparse"]
 
 [tool.isort]
 profile = "black"

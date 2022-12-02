@@ -1,12 +1,16 @@
+from __future__ import annotations
+
 import pathlib
 import shutil
 import sys
 import sysconfig
 import tarfile
 import traceback
+import importlib.metadata
 
 import installer
 import packaging.requirements
+import packaging.markers
 import requests
 import unearth
 from installer.destinations import SchemeDictionaryDestination
@@ -62,7 +66,11 @@ class Busywork(Backend):
             return
 
         requirement = packaging.requirements.Requirement(package)
+        self.install_requirement(requirement)
 
+    def install_requirement(
+        self, requirement: packaging.requirements.Requirement
+    ) -> None:
         if self.is_installed(requirement):
             pretty_print(
                 f"Skipping installing {requirement.name} because package is already"
@@ -78,7 +86,7 @@ class Busywork(Backend):
         pkg = matches.best
 
         if not pkg:
-            raise Exception
+            error(f"Can't install package {requirement.name} because it doesn't exist.")
 
         # Download the package
         resp = requests.get(pkg.link.url)
@@ -98,17 +106,12 @@ class Busywork(Backend):
         """
         Return `True` if a package is current installed.
         """
-        for path in sys.path:
-            for dir in pathlib.Path(path).glob("*.dist-info"):
-                with (dir / "METADATA").open() as f:
-                    lines = f.read().splitlines()
-
-                    name = lines[1].split(": ")[1]
-                    version = lines[2].split(": ")[1]
-
-                    if name == req.name and req.specifier.contains(version):
-                        return True
-
+        try:
+            if req.specifier.contains(importlib.metadata.version(req.name)):
+                self.resolve_dependencies(req.name)
+                return True
+        except importlib.metadata.PackageNotFoundError:
+            return False
         return False
 
     def install_wheel(self, pkg: unearth.Package, path: pathlib.Path) -> None:
@@ -134,10 +137,14 @@ class Busywork(Backend):
                 )
         except FileExistsError:
             pretty_print(
-                f"Skipping installing {pkg.name} because it is already installed."
+                f"Failed to install {pkg.name} because it is already installed.",
+                arrow=False,
             )
-
+            print(pkg.name)
+            error("123")
         path.unlink()
+
+        self.resolve_dependencies(pkg.name)
 
     def install_sdist(self, pkg: unearth.Package, tar_path: pathlib.Path) -> None:
         """
@@ -172,3 +179,28 @@ class Busywork(Backend):
         shutil.rmtree(extract_path)
 
         self.install_wheel(pkg, TMP_PATH / built)
+
+    def resolve_dependencies(self, package: str) -> None:
+        deps = importlib.metadata.requires(package)
+
+        if not deps:
+            return
+
+        version = packaging.requirements.Requirement(
+            importlib.metadata.version(package)
+        )
+
+        pretty_print(f"Installing dependencies for {package}", arrow=False)
+
+        dependencies: list[packaging.requirements.Requirement] = [
+            packaging.requirements.Requirement(dep) for dep in deps
+        ]
+        extra_markers = [
+            packaging.markers.Marker(f"extra == {extra}") for extra in version.extras
+        ]
+
+        for dep in dependencies:
+            if dep.marker and dep.marker not in extra_markers:
+                return
+
+            self.install_requirement(dep)
