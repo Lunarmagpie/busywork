@@ -2,14 +2,12 @@ import argparse
 import sys
 
 from busywork.install import install, install_group, install_groups, install_remaining
-from busywork.pyproject import Metadata
+from busywork.pyproject import META
 from busywork.utils import error, pretty_print
 
 
 class CommandLine:
     def __init__(self) -> None:
-        self.meta = Metadata()
-
         if len(sys.argv) <= 1:
             error("Expected at least one argument.")
 
@@ -61,7 +59,7 @@ class CommandLine:
 
         if getattr(args, "all", None):
             found_flag = True
-            install_groups(self.meta.groups.values())
+            install_groups(META.groups.values())
 
         if getattr(args, "group", None):
             found_flag = True
@@ -72,12 +70,12 @@ class CommandLine:
                 groups = [args.group]
 
             for group in groups:
-                if group not in self.meta.groups:
+                if group not in META.groups:
                     error(
                         f'Can not install group "{group}" because group is not defined.'
                     )
 
-            install_groups(self.meta.groups[group] for group in groups)
+            install_groups(META.groups[group] for group in groups)
 
         if getattr(args, "this", None):
             found_flag = True
@@ -85,7 +83,7 @@ class CommandLine:
 
         if getattr(args, "dependencies", None):
             found_flag = True
-            install_group(self.meta.project_dependencies)
+            install_group(META.project_dependencies)
 
         if found_flag:
             install_remaining()

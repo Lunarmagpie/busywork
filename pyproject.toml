@@ -9,7 +9,16 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "GPL-v2" }
 classifiers = ["Programming Language :: Python :: 3"]
-dependencies = ["pip", "tomli>=2.0.0", "dahlia>=2.1.3"]
+dependencies = [
+    "pip",
+    "tomli>=2.0.0",
+    "dahlia>=2.1.3",
+    "unearth>=0.6.2",
+    "build>=0.9.0",
+    "installer>=0.5.1",
+    "packaging>=21.3",
+    "requests",
+]
 version = "0.1.0b1"
 
 [project.urls]
@@ -17,6 +26,9 @@ Repository = "https://github.com/Lunarmagpie/busywork"
 
 [tool.setuptools]
 packages = ["busywork"]
+
+[tool.busywork]
+backend = "busywork"
 
 [tool.busywork.groups.dev]
 requires = ["nox>=2022.11.21"]
@@ -31,16 +43,24 @@ requires = [
 ]
 
 [tool.busywork.groups.typing]
-requires = ["mypy>=0.991"]
+requires = ["mypy>=0.991", "types-requests"]
+
+[tool.black]
+line-length = 88
 
 [tool.isort]
+line_length = 88
 profile = "black"
 
 [tool.mypy]
 strict = true
 
+[[tool.mypy.overrides]]
+module = ["installer.*"]
+ignore_missing_imports = true
+
 [tool.ruff]
-line-length = 88
+line-length = 94
 
 [project.scripts]
 busywork = "busywork.__main__:main"

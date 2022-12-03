@@ -5,6 +5,9 @@ import typing as t
 
 import tomli
 
+from busywork.backends import Backend, Busywork, Pip
+from busywork.utils import error
+
 
 @dataclasses.dataclass
 class Group:
@@ -32,7 +35,12 @@ class Metadata:
         with open("pyproject.toml", "rb") as f:
             data = tomli.load(f)
 
-        groups: dict[str, t.Any] = data["tool"]["busywork"]["groups"]
+        try:
+            tool_busywork: dict[str, t.Any] = data["tool"]["busywork"]
+        except KeyError:
+            error("Expected [tool.busywork] section in pyproject.toml.")
+
+        groups: dict[str, t.Any] = tool_busywork["groups"]
 
         self.groups = {name: Group.from_str(name, groups) for name in groups.keys()}
 
@@ -41,3 +49,13 @@ class Metadata:
             groups=[],
             packages=data["project"].get("dependencies", []),
         )
+
+        backend = tool_busywork.get("backend", "busywork")
+
+        if backend not in {"busywork", "pip"}:
+            error('tool.busywork.backend must be "busywork" or "pip"')
+
+        self.backend: Backend = {"busywork": Busywork, "pip": Pip}[backend]()
+
+
+META = Metadata()

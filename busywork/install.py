@@ -1,9 +1,7 @@
-import subprocess
-import sys
 import typing as t
 
-from busywork.pyproject import Group
-from busywork.utils import error, pretty_print
+from busywork.pyproject import META, Group
+from busywork.utils import pretty_print
 
 installed_groups = []
 groups_to_install = []
@@ -42,16 +40,6 @@ def install_remaining() -> None:
 
 
 def install(package: str) -> None:
-    pretty_print(f"&6Installing package {package} through pip:")
+    pretty_print(f"&6Installing package {package} with {META.backend.name}:")
 
-    # Flushing stdout ensures `print` output shows before the subprocess output.
-    # Speed doesn't matter here anyway so this solution is fine.
-    sys.stdout.flush()
-
-    try:
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", package],
-            stderr=subprocess.STDOUT,
-        )
-    except subprocess.SubprocessError:
-        error(f"Could not install package {package}. This is a problem with pip.")
+    META.backend.install_package(package)
