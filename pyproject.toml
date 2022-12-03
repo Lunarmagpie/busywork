@@ -19,7 +19,7 @@ dependencies = [
     "packaging>=21.3",
     "requests",
 ]
-version = "0.1.0b1"
+version = "0.1.0b2"
 
 [project.urls]
 Repository = "https://github.com/Lunarmagpie/busywork"
